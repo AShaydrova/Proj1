@@ -18,4 +18,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     Exceptions.h \
     Person.h \
+    PersonKeeper.h \
     TStack.h
