@@ -3,19 +3,19 @@
 
 #include <iostream>
 
-class Person
+class Person //создание класса Person
 {
 private:
     long key;
     std::string last_name;
     std::string first_name;
 public:
-    Person();
-    Person(const Person&);
-    const std::string& getLastName() const { return last_name; }
-    const std::string& getFirstName() const { return first_name; }
-    void setLastName(const std::string&);
-    void setFirstName(const std::string&);
+    Person(); //конструктор по умолчанию
+    Person(const Person&); //конструктор копирования
+    const std::string& getLastName() const { return last_name; } //функция возвращает фамилию
+    const std::string& getFirstName() const { return first_name; } //функция возвращает имя и отчество
+    void setLastName(const std::string&); //функция устанавливает фамилию
+    void setFirstName(const std::string&); //функция устанавливет отчество
 };
 Person::Person()
 {

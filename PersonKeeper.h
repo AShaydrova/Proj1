@@ -15,24 +15,26 @@ public:
     }
     Stack<Person> readPersons(std::istream& stream)
     {
-        std::ios_base::iostate s = stream.exceptions();
+        std::ios_base::iostate s = stream.exceptions(); //Сохранили состояние исключений потока
 
+        //Установили состояние таким образом, что при достижении
+        //конца файла будет сгенерировано исключение
         stream.exceptions(std::ios_base::eofbit);
 
         Stack<Person> ret; //создание стека типа Person
-        Person pers;
-        std::string word, word2;
+        Person pers; //создание объекта класса Person
+        std::string word, word2; //переменные для хранения строк
         while (1) {
             try {
-                stream >> word;
-                pers.setLastName(word);
-                stream >> word;
-                stream >> word2;
-                word = word + " " + word2;
-                pers.setFirstName(word);
-                ret.Push(pers);
+                stream >> word;  //считывание фамилии из входного потока
+                pers.setLastName(word); //запись фамилии в объект Person
+                stream >> word; //считывание имени из входного потока
+                stream >> word2; //считывание отчества из входного потока
+                word = word + " " + word2; //объединение считанных имени и отчества в одну строку
+                pers.setFirstName(word); //запись имени и отчества в объект Person
+                ret.Push(pers); //помещение объекта Person в стек
             }
-            catch (const std::ios_base::failure&) {
+            catch (const std::ios_base::failure&) { // обрабатываем исключение
                 break;
             }
         }
@@ -46,11 +48,11 @@ public:
         while (1) {
             try
             {
-                pers = ret.Pop();
-                word = pers.getLastName();
-                stream << word << " ";
-                word = pers.getFirstName();
-                stream << word << std::endl;
+                pers = ret.Pop(); //извлечение объекта Person из стека
+                word = pers.getLastName(); //считывание фамилии из объекта Person
+                stream << word << " "; //запись в файл фамилии
+                word = pers.getFirstName(); //считывание имени и отчества из объекта Person
+                stream << word << std::endl; //запись в файл имени и отчества
             }
             catch (const exc::EStackException& e) { // обрабатываем исключение
                 break;

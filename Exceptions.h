@@ -5,18 +5,18 @@
 namespace exc {
 
 
-    class EStackException
+    class EStackException //создание класса исключений для класса стек
     {
     private:
         char* message;
     public:
         EStackException(const char* arg_message)
-        {
+        {   //формирование сообщения об ошибке
             message = new char[strlen(arg_message) + 1];
             strcpy(message, arg_message);
         }
         EStackException(const EStackException& arg)
-        {
+        {   //формирование сообщения об ошибке
             message = new char[strlen(arg.message) + 1];
             strcpy(message, arg.message);
         }
