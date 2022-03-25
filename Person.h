@@ -3,20 +3,32 @@
 
 #include <iostream>
 
-class Person //создание класса Person
+// Класс Person для хранения фио
+// Конструкторы класса:
+//      конструктор по умолчанию Person().
+//      конструктор копирования Person(const Person&).
+// Метод getLastName() возвращает фамилию в строковом виде.
+// Метод getFirstName() возвращает имя в строковом виде.
+// Метод setLastName(const std::string&) устанавливает фамилию,
+//      которая передается аргументом с типом строка.
+//      Метод не возвращает значение.
+// Метод setFirstName(const std::string&) устанавливает имя и отчество,
+//      которые передаются одним аргументом с типом строка.
+class Person
 {
 private:
     long key;
     std::string last_name;
     std::string first_name;
 public:
-    Person(); //конструктор по умолчанию
-    Person(const Person&); //конструктор копирования
-    const std::string& getLastName() const { return last_name; } //функция возвращает фамилию
-    const std::string& getFirstName() const { return first_name; } //функция возвращает имя и отчество
-    void setLastName(const std::string&); //функция устанавливает фамилию
-    void setFirstName(const std::string&); //функция устанавливет отчество
+    Person();
+    Person(const Person&);
+    const std::string& getLastName() const { return last_name; }
+    const std::string& getFirstName() const { return first_name; }
+    void setLastName(const std::string&);
+    void setFirstName(const std::string&);
 };
+
 Person::Person()
 {
     key = 0;

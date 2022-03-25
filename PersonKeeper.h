@@ -3,8 +3,29 @@
 
 #include <fstream>
 #include "Person.h"
-#include <TStack.h>
+#include "TStack.h"
 
+// Класс PersonKeeper для записи из файла в стек элементов
+//      класса Person и записи в поток из стека с
+//      элементами класса Person.
+// Конструкторы класса (закрыты):
+//      конструктор по умолчанию PersonKeeper().
+//      конструктор копирования PersonKeeper(PersonKeeper const&).
+// PersonKeeper& Instance() -
+//      статический создающий метод, который будет использоваться
+//      для получения единственного объекта класса PersonKeeper.
+//      Возвращает ссылку на объект класса PersonKeeper
+// Метод readPersons(std::istream& stream)
+//      Метод считывает информацию о людях из входного
+//      файла (файл передается аргументом), создает на основе этой
+//      информации объекты класса Person, и помещает их в стек.
+//      Метод возвращает стек.
+// Метод writePersons(std::ostream& stream, Stack<Person> ret)
+//      Метод записывает в файл из
+//      стека (файл и стек передаются аргументами) информацию о людях
+//      При этом передаваемый методу writePersons стек не изменяется
+//      (передача по значению).
+//      Метод не возвращает значение.
 class PersonKeeper
 {
 public:
@@ -15,30 +36,14 @@ public:
     }
     Stack<Person> readPersons(std::istream& stream)
     {
-        std::ios_base::iostate s = stream.exceptions(); //Сохранили состояние исключений потока
-
-        //Установили состояние таким образом, что при достижении
-        //конца файла будет сгенерировано исключение
-        stream.exceptions(std::ios_base::eofbit);
-
         Stack<Person> ret; //создание стека типа Person
         Person pers; //создание объекта класса Person
-        std::string word, word2; //переменные для хранения строк
-        while (1) {
-            try {
-                stream >> word;  //считывание фамилии из входного потока
-                pers.setLastName(word); //запись фамилии в объект Person
-                stream >> word; //считывание имени из входного потока
-                stream >> word2; //считывание отчества из входного потока
-                word = word + " " + word2; //объединение считанных имени и отчества в одну строку
-                pers.setFirstName(word); //запись имени и отчества в объект Person
-                ret.Push(pers); //помещение объекта Person в стек
-            }
-            catch (const std::ios_base::failure&) { // обрабатываем исключение
-                break;
-            }
+        for (std::string last_name, name, patronymic; stream >> last_name >> name >> patronymic;)
+        {
+            pers.setLastName(last_name); // фамилия записывается в объект Person
+            pers.setFirstName(name + " " + patronymic); //запись имени и отчества в объект Person
+            ret.Push(pers); // объект Person помещается в стек
         }
-        stream.exceptions(s);
         return ret;
     }
     void writePersons(std::ostream& stream, Stack<Person> ret)
@@ -48,13 +53,13 @@ public:
         while (1) {
             try
             {
-                pers = ret.Pop(); //извлечение объекта Person из стека
-                word = pers.getLastName(); //считывание фамилии из объекта Person
-                stream << word << " "; //запись в файл фамилии
-                word = pers.getFirstName(); //считывание имени и отчества из объекта Person
-                stream << word << std::endl; //запись в файл имени и отчества
+                pers = ret.Pop(); // объект Person извлекается из стека
+                word = pers.getLastName(); // считыванается фамилия из объекта Person
+                stream << word << " "; // фамилия записывается в файл
+                word = pers.getFirstName(); // считываются имя и отчество из объекта Person
+                stream << word << std::endl; // имя и отчество записываются в файл
             }
-            catch (const exc::EStackException& e) { // обрабатываем исключение
+            catch (const exc::EStackException& e) { // обрабатывается исключение
                 break;
             }
         }
