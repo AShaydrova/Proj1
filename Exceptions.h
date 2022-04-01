@@ -2,21 +2,29 @@
 #define EXCEPTIONS_H
 
 #include <string.h>
+
 namespace exc {
 
-
-    class EStackException //создание класса исключений для класса стек
+    // Класс исключительных ситуаций EStackException
+    //      для обработки ошибок, которые могут возникать
+    //      при работе со стеком.
+    // Конструктоны класса:
+    //      конструктор с аргументом строкового типа EStackException(const char* arg_message)
+    //      конструктор копирования EStackException(const EStackException& arg)
+    // Метод what() возвращает сообщение об ошибке,
+    //      тип возвращаемого значения - строка.
+    class EStackException
     {
     private:
         char* message;
     public:
         EStackException(const char* arg_message)
-        {   //формирование сообщения об ошибке
+        {
             message = new char[strlen(arg_message) + 1];
             strcpy(message, arg_message);
         }
         EStackException(const EStackException& arg)
-        {   //формирование сообщения об ошибке
+        {
             message = new char[strlen(arg.message) + 1];
             strcpy(message, arg.message);
         }
@@ -24,11 +32,13 @@ namespace exc {
         {
             delete message;
         }
-        const char* what() const { return message; } //возвращает диагностическое сообщение
-
+        const char* what() const { return message; }
     };
 
-    class EStackEmpty : public EStackException //наследник класса EStackException
+    // Класс EStackEmpty является наследником класса EStackException
+    // и обрабатывает ошибку, возникающую при попытке извлечения элемента из стека,
+    // когда стек пуст.
+    class EStackEmpty : public EStackException
     {
     public:
         EStackEmpty(const char* arg) : EStackException(arg) {}
